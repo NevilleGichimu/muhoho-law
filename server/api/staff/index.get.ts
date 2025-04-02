@@ -4,13 +4,12 @@ import { createClient } from "@supabase/supabase-js";
 export default defineEventHandler(async (event) => {
   // const supabase = await serverSupabaseClient(event);
 
-  const runtimeConfig = useRuntimeConfig()
+  const runtimeConfig = useRuntimeConfig();
 
   const supabase = createClient(
     runtimeConfig.public.supabaseUrl,
     runtimeConfig.public.supabaseServiceRoleKey
   );
-
 
   if (!supabase) {
     throw createError({
@@ -20,16 +19,13 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const { data, error } = await supabase
-      .from("employees")
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("staff").select("*");
 
     if (error) throw createError({ statusCode: 500, message: error.message });
 
     return { success: true, data };
   } catch (err) {
-    console.error("Error fetching employees:", err);
+    console.error("Error fetching staff:", err);
     return { success: false, message: "Internal Server Error" };
   }
 });

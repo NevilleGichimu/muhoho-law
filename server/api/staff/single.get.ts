@@ -10,12 +10,12 @@ export default defineEventHandler(async (event) => {
 
   const { id } = getQuery(event);
   if (!id) {
-    throw createError({ statusCode: 400, message: "Missing employee ID" });
+    throw createError({ statusCode: 400, message: "Missing staff ID" });
   }
 
   try {
     const { data, error } = await supabase
-      .from("employees")
+      .from("staff")
       .select("*")
       .eq("id", id)
       .single();
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     }
     return { success: true, data };
   } catch (err) {
-    console.error(`Error fetching employee with id ${id}:`, err);
+    console.error(`Error fetching staff with id ${id}:`, err);
     return { success: false, message: "Internal Server Error" };
   }
 });

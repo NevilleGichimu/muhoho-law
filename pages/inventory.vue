@@ -84,7 +84,7 @@ const handleDelete = async () => {
     <UCard>
       <SharedDatagrid :columns="columns" :rows="inventory">
         <template #actions="{ row }">
-          <div class="">
+          <div class="flex space-x-2">
             <UButton
               icon="mdi:pencil"
               size="xs"

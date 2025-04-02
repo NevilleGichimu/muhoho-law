@@ -9,19 +9,13 @@ const sidebarItems = [
     items: [
       { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
       { label: "Orders", icon: "mdi:cart", to: "/orders" },
-      { label: "Payments", icon: "mdi:credit-card", to: "/payments" },
     ],
   },
   {
     section: "People",
     items: [
       { label: "Clients", icon: "mdi:account", to: "/clients" },
-      { label: "Employees", icon: "mdi:account-group", to: "/employees" },
-      {
-        label: "Attendance",
-        icon: "mdi:calendar-check", // MDI equivalent of calendar-check
-        to: "/attendance",
-      },
+      { label: "Staff", icon: "mdi:account-group", to: "/staff" },
     ],
   },
   {
@@ -29,6 +23,12 @@ const sidebarItems = [
     items: [
       { label: "Inventory", icon: "mdi:clipboard-list", to: "/inventory" },
       { label: "Products", icon: "mdi:package", to: "/products" },
+    ],
+  },
+  {
+    section: "Finance",
+    items: [
+    { label: "Payments", icon: "mdi:credit-card", to: "/payments" },
     ],
   },
   {

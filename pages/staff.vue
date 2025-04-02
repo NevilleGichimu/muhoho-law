@@ -1,30 +1,30 @@
 <script setup>
 useSeoMeta({
-  title: "Employees",
-  ogTitle: "Employees",
-  description: "Manage employee details and work status.",
-  ogDescription: "Easily update and monitor your employees' activities.",
+  title: "staff",
+  ogTitle: "staff",
+  description: "Manage staff details and work status.",
+  ogDescription: "Easily update and monitor your staff' activities.",
 });
 
 const {
-  employees,
-  getAllEmployees,
-  getSingleEmployee,
-  deleteEmployee,
-  employeeFormState,
-  isEditingEmployee,
-} = useEmployee();
+  staff,
+  getAllStaff,
+  getSingleStaff,
+  deleteStaff,
+  staffFormState,
+  isEditingStaff,
+} = useStaff();
 
 const isDrawerOpen = ref(false);
 
 const isDeleteModalOpen = ref(false);
 
-const selectedEmployeeId = ref(null);
+const selectedStaffId = ref(null);
 
-const response = await getAllEmployees();
+const response = await getAllStaff();
 
 const columns = ref([
-  { key: "id", label: "ID", sortable: true },
+  { key: "image_url", label: "Profile" },
   { key: "name", label: "Name" },
   { key: "role", label: "Role" },
   { key: "phone", label: "Phone" },
@@ -34,31 +34,31 @@ const columns = ref([
 ]);
 
 const openEditDrawer = async (id) => {
-  isEditingEmployee.value = true;
-  selectedEmployeeId.value = id;
+  isEditingStaff.value = true;
+  selectedStaffId.value = id;
   isDrawerOpen.value = true;
 
-  // Fetch the employee data and update the form state
-  const { data } = await getSingleEmployee(id);
+  // Fetch the staff data and update the form state
+  const { data } = await getSingleStaff(id);
   if (data) {
-    employeeFormState.value = { ...data };
+    staffFormState.value = { ...data };
   }
 };
 
-const refreshEmployees = async () => {
+const refreshStaff = async () => {
   isDrawerOpen.value = false;
-  await getAllEmployees();
+  await getAllStaff();
 };
 
 const confirmDelete = (id) => {
-  selectedEmployeeId.value = id;
+  selectedStaffId.value = id;
   isDeleteModalOpen.value = true;
 };
 
 const handleDelete = async () => {
-  if (selectedEmployeeId.value) {
-    await deleteEmployee(selectedEmployeeId.value);
-    await getAllEmployees(); // Refresh list after deletion
+  if (selectedStaffId.value) {
+    await deleteStaff(selectedStaffId.value);
+    await getAllStaff(); // Refresh list after deletion
   }
   isDeleteModalOpen.value = false;
 };
@@ -67,16 +67,16 @@ const handleDelete = async () => {
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">Employees</h1>
+      <h1 class="text-xl font-semibold">Staff</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
-        Add Employee
+        Add Staff
       </UButton>
     </div>
 
     <UCard>
-      <SharedDatagrid :columns="columns" :rows="employees">
+      <SharedDatagrid :columns="columns" :rows="staff">
         <template #actions="{ row }">
-          <div class="">
+          <div class="flex space-x-2">
             <UButton
               icon="mdi:pencil"
               size="xs"
@@ -109,13 +109,13 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Employee">
-      <FormsEmployeeForm @cancel="refreshEmployees" />
+    <SharedDrawer v-model="isDrawerOpen" title="Edit Staff">
+      <FormsStaffForm @cancel="refreshStaff" />
     </SharedDrawer>
 
     <SharedModal
       :show="isDeleteModalOpen"
-      message="Are you sure you want to delete this employee?"
+      message="Are you sure you want to delete this staff?"
       @confirm="handleDelete"
       @close="isDeleteModalOpen = false"
     />

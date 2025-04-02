@@ -8,25 +8,23 @@ export default defineEventHandler(async (event) => {
     runtimeConfig.public.supabaseServiceRoleKey
   );
 
-  const employeeData = await readBody(event);
-  if (!employeeData) {
-    throw createError({ statusCode: 400, message: "Missing employee data" });
+  const { id } = getQuery(event);
+  if (!id) {
+    throw createError({ statusCode: 400, message: "Missing staff ID" });
   }
 
   try {
     const { data, error } = await supabase
-      .from("employees")
-      .insert(employeeData)
-      .select()
-      .single();
+      .from("staff")
+      .delete()
+      .eq("id", id);
 
     if (error) {
       throw createError({ statusCode: 500, message: error.message });
     }
-
     return { success: true, data };
   } catch (err) {
-    console.error("Error creating employee:", err);
+    console.error(`Error deleting staff with id ${id}:`, err);
     return { success: false, message: "Internal Server Error" };
   }
 });

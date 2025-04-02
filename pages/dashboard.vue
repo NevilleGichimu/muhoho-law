@@ -19,7 +19,7 @@ const charts = ref([
     icon: "mdi:account-group",  // MDI icon for "Employees"
     subTitle: "All employees",
     total: counts.value.employees,
-    link: "/employees",
+    link: "/staff",
   },
   {
     title: "Inventory",

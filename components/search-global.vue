@@ -11,7 +11,7 @@ const sidebarItems = [
     section: "General",
     items: [
       { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
-      { label: "Employees", icon: "mdi:account-group", to: "/employees" },
+      { label: "Employees", icon: "mdi:account-group", to: "/staff" },
       { label: "Orders", icon: "mdi:cart", to: "/orders" },
       { label: "Customers", icon: "mdi:account", to: "/customers" },
       { label: "Products", icon: "mdi:package", to: "/products" },

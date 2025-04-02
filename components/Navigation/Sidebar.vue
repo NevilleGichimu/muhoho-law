@@ -1,60 +1,34 @@
 <script setup lang="ts">
+import { admin, lawyer, client } from "./SidebarItems";
+
 defineProps<{ isOpen: boolean }>();
 
 const emit = defineEmits(["toggle"]);
 
-const sidebarItems = [
-  {
-    section: "General",
-    items: [
-      { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
-      { label: "Orders", icon: "mdi:cart", to: "/orders" },
-    ],
-  },
-  {
-    section: "People",
-    items: [
-      { label: "Clients", icon: "mdi:account", to: "/clients" },
-      { label: "Staff", icon: "mdi:account-group", to: "/staff" },
-    ],
-  },
-  {
-    section: "Workshop",
-    items: [
-      { label: "Inventory", icon: "mdi:clipboard-list", to: "/inventory" },
-      { label: "Products", icon: "mdi:package", to: "/products" },
-    ],
-  },
-  {
-    section: "Finance",
-    items: [
-    { label: "Payments", icon: "mdi:credit-card", to: "/payments" },
-    ],
-  },
-  {
-    section: "Your Profile",
-    items: [
-      { label: "Notifications", icon: "mdi:bell", to: "/notifications" },
-      { label: "Settings", icon: "mdi:cogs", to: "/settings" },
-      { label: "Profile", icon: "mdi:account", to: "/profile" },
-    ],
-  },
-  {
-    section: "System",
-    items: [
-      {
-        label: "Authenticated Users",
-        icon: "mdi:account-circle",
-        to: "/users",
-      },
-      { label: "Images Storage", icon: "mdi:image", to: "/images-storage" },
-      { label: "Documents Storage", icon: "mdi:file", to: "/documents-storage" },
+const router = useRouter();
 
-    ],
-  },
-];
+const { auth: authAction } = useSupabaseClient();
 
+const userRole = useHashedCookie<string | null | undefined>("aa05f44d53a34");
+
+userRole.value = 'admin'
+
+const getSidebarItems = (role: string | null | undefined) => {
+  switch (role) {
+    case "admin":
+      return admin;
+    case "lawyer":
+      return lawyer;
+    case "client":
+      return client;
+    default:
+      return []; // Empty array if role is not recognized
+  }
+};
+
+const sidebarItems = computed(() => getSidebarItems(userRole.value));
 </script>
+
 <template>
   <aside
     class="fixed inset-y-0 left-0 h-screen border-r p-4 transition-all duration-300 ease-in-out overflow-y-auto"

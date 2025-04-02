@@ -65,7 +65,7 @@ const handleDelete = async () => {
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">DocumentUploads</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
-        Add DocumentUploads
+        Add Document
       </UButton>
     </div>
 

@@ -11,7 +11,7 @@ const { auth: authAction } = useSupabaseClient();
 
 const userRole = useHashedCookie<string | null | undefined>("aa05f44d53a34");
 
-userRole.value = 'admin'
+// userRole.value = 'admin'
 
 const getSidebarItems = (role: string | null | undefined) => {
   switch (role) {

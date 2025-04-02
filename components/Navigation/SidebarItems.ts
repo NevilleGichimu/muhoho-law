@@ -82,15 +82,11 @@ export const lawyer = [
   {
     section: "My Work",
     items: [
-      { label: "Cases", icon: "mdi:clipboard-list", to: "/cases" },
+      { label: "My Cases", icon: "mdi:clipboard-list", to: "/cases" },
       { label: "Tasks & Todos", icon: "mdi:check", to: "/tasks" },
-      { label: "Appointments", icon: "mdi:calendar", to: "/appointments" },
-      { label: "Documents", icon: "mdi:file", to: "/documents" },
+      { label: "My Appointments", icon: "mdi:calendar", to: "/appointments" },
+      { label: "My Documents", icon: "mdi:file", to: "/documents" },
     ],
-  },
-  {
-    section: "Finance",
-    items: [{ label: "Payments", icon: "mdi:credit-card", to: "/payments" }],
   },
   {
     section: "Your Profile",
@@ -110,13 +106,15 @@ export const client = [
   {
     section: "Cases",
     items: [
-      { label: "All Cases", icon: "mdi:clipboard-list", to: "/cases" },
-      { label: "Appointments", icon: "mdi:calendar", to: "/appointments" },
+      { label: "My Cases", icon: "mdi:clipboard-list", to: "/cases" },
+      { label: "My Appointments", icon: "mdi:calendar", to: "/appointments" },
+      { label: "Case Documents", icon: "mdi:calendar", to: "/document-uploads" },
+
     ],
   },
   {
     section: "Finance",
-    items: [{ label: "Payments", icon: "mdi:credit-card", to: "/payments" }],
+    items: [{ label: "Billing", icon: "mdi:credit-card", to: "/payments" }],
   },
   {
     section: "Your Profile",

@@ -15,8 +15,7 @@ const sidebarItems = [
   {
     section: "People",
     items: [
-      { label: "Suppliers", icon: "mdi:truck", to: "/suppliers" },
-      { label: "Customers", icon: "mdi:account", to: "/customers" },
+      { label: "Clients", icon: "mdi:account", to: "/clients" },
       { label: "Employees", icon: "mdi:account-group", to: "/employees" },
       {
         label: "Attendance",

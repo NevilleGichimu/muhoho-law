@@ -8,15 +8,15 @@ export default defineEventHandler(async (event) => {
     runtimeConfig.public.supabaseServiceRoleKey
   );
 
-  const suppliersData = await readBody(event);
-  if (!suppliersData) {
-    throw createError({ statusCode: 400, message: "Missing suppliers data" });
+  const clientsData = await readBody(event);
+  if (!clientsData) {
+    throw createError({ statusCode: 400, message: "Missing clients data" });
   }
 
   try {
     const { data, error } = await supabase
-      .from("suppliers")
-      .insert(suppliersData)
+      .from("clients")
+      .insert(clientsData)
       .select()
       .single();
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
 
     return { success: true, data };
   } catch (err) {
-    console.error("Error creating suppliers:", err);
+    console.error("Error creating clients:", err);
     return { success: false, message: "Internal Server Error" };
   }
 });

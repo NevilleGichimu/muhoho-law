@@ -10,21 +10,22 @@ export default defineEventHandler(async (event) => {
 
   const { id } = getQuery(event);
   if (!id) {
-    throw createError({ statusCode: 400, message: "Missing suppliers ID" });
+    throw createError({ statusCode: 400, message: "Missing clients ID" });
   }
 
   try {
     const { data, error } = await supabase
-      .from("suppliers")
-      .delete()
-      .eq("id", id);
+      .from("clients")
+      .select("*")
+      .eq("id", id)
+      .single();
 
     if (error) {
       throw createError({ statusCode: 500, message: error.message });
     }
     return { success: true, data };
   } catch (err) {
-    console.error(`Error deleting suppliers with id ${id}:`, err);
+    console.error(`Error fetching clients with id ${id}:`, err);
     return { success: false, message: "Internal Server Error" };
   }
 });

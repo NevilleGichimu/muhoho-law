@@ -1,64 +1,62 @@
 <script setup>
 useSeoMeta({
-  title: "Suppliers",
-  ogTitle: "Suppliers",
-  description: "Manage your suppliers efficiently.",
-  ogDescription: "Keep track of supplier details and orders.",
+  title: "Clients",
+  ogTitle: "Clients",
+  description: "Manage your clients efficiently.",
+  ogDescription: "Keep track of client details and orders.",
 });
 
 const {
-  suppliers,
-  getAllSuppliers,
-  getSingleSupplier,
-  deleteSupplier,
-  supplierFormState,
-  isEditingSupplier,
-} = useSupplier();
+  clients,
+  getAllClients,
+  getSingleClient,
+  deleteClient,
+  clientFormState,
+  isEditingClient,
+} = useClient();
 
 const isDrawerOpen = ref(false);
 
 const isDeleteModalOpen = ref(false);
 
-const selectedSupplierId = ref(null);
+const selectedClientId = ref(null);
 
-const response = await getAllSuppliers();
+const response = await getAllClients();
 
 const columns = ref([
-  { key: "id", label: "ID", sortable: true },
+  { key: "image_url", label: "Profile" },
   { key: "name", label: "Name" },
-  { key: "contact_person", label: "Contact person" },
   { key: "phone_number", label: "Phone" },
   { key: "email", label: "Email" },
-  { key: "category", label: "Category" },
-  { key: "last_contact_date", label: "Last Contacted" },
+  { key: "address", label: "Address" },
 ]);
 
 const openEditDrawer = async (id) => {
-  isEditingSupplier.value = true;
-  selectedSupplierId.value = id;
+  isEditingClient.value = true;
+  selectedClientId.value = id;
   isDrawerOpen.value = true;
 
-  // Fetch the supplier data and update the form state
-  const { data } = await getSingleSupplier(id);
+  // Fetch the client data and update the form state
+  const { data } = await getSingleClient(id);
   if (data) {
-    supplierFormState.value = { ...data };
+    clientFormState.value = { ...data };
   }
 };
 
-const refreshSuppliers = async () => {
+const refreshClients = async () => {
   isDrawerOpen.value = false;
-  await getAllSuppliers();
+  await getAllClients();
 };
 
 const confirmDelete = (id) => {
-  selectedSupplierId.value = id;
+  selectedClientId.value = id;
   isDeleteModalOpen.value = true;
 };
 
 const handleDelete = async () => {
-  if (selectedSupplierId.value) {
-    await deleteSupplier(selectedSupplierId.value);
-    await getAllSuppliers(); // Refresh list after deletion
+  if (selectedClientId.value) {
+    await deleteClient(selectedClientId.value);
+    await getAllClients(); // Refresh list after deletion
   }
   isDeleteModalOpen.value = false;
 };
@@ -67,16 +65,16 @@ const handleDelete = async () => {
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">Suppliers</h1>
+      <h1 class="text-xl font-semibold">Clients</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
-        Add Supplier
+        Add Client
       </UButton>
     </div>
 
     <UCard>
-      <SharedDatagrid :columns="columns" :rows="suppliers">
+      <SharedDatagrid :columns="columns" :rows="clients">
         <template #actions="{ row }">
-          <div class="">
+          <div class="flex space-x-2">
             <UButton
               icon="mdi:pencil"
               size="xs"
@@ -109,13 +107,13 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Supplier">
-      <FormsSupplierForm @cancel="refreshSuppliers" />
+    <SharedDrawer v-model="isDrawerOpen" title="Edit Client">
+      <FormsClientForm @cancel="refreshClients" />
     </SharedDrawer>
 
     <SharedModal
       :show="isDeleteModalOpen"
-      message="Are you sure you want to delete this supplier?"
+      message="Are you sure you want to delete this client?"
       @confirm="handleDelete"
       @close="isDeleteModalOpen = false"
     />

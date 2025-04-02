@@ -1,31 +1,31 @@
 import { useToast } from "#imports";
 
-export function useSupplier() {
+export function useClient() {
   const toast = useToast();
 
-  const suppliers = ref([]);
+  const clients = ref([]);
 
-  const supplierFormState = useState("supplier-formstate", () => ({
+  const clientFormState = useState("client-formstate", () => ({
     name: "",
     contact_person: "",
     phone_number: "",
     email: "",
     address: "",
     category: "",
-    suppliers_supplied: [],
+    clients_supplied: [],
     notes: "",
     last_contact_date: ""
     }));
 
-  const getAllSuppliers = async () => {
+  const getAllClients = async () => {
     try {
-      const response = await $fetch<IApiResponse>("/api/suppliers");
-      suppliers.value = response.data;
+      const response = await $fetch<IApiResponse>("/api/clients");
+      clients.value = response.data;
 
       if (!response.success) {
         toast.add({
           title: "Error",
-          description: response.message || "Failed to fetch suppliers.",
+          description: response.message || "Failed to fetch clients.",
           color: "red",
         });
         return null;
@@ -33,27 +33,27 @@ export function useSupplier() {
 
       return response.data;
     } catch (error) {
-      console.error("Error in getAllSuppliers:", error);
+      console.error("Error in getAllClients:", error);
       toast.add({
         title: "Error",
-        description: "Failed to fetch suppliers.",
+        description: "Failed to fetch clients.",
         color: "red",
       });
       throw error;
     }
   };
 
-  const createSupplier = async (supplierData: any) => {
+  const createClient = async (clientData: any) => {
     try {
-      const response = await $fetch<IApiResponse>("/api/suppliers", {
+      const response = await $fetch<IApiResponse>("/api/clients", {
         method: "POST",
-        body: supplierData,
+        body: clientData,
       });
 
       if (!response.success) {
         toast.add({
           title: "Error",
-          description: response.message || "Failed to create supplier.",
+          description: response.message || "Failed to create client.",
           color: "red",
         });
         return null;
@@ -61,32 +61,32 @@ export function useSupplier() {
 
       toast.add({
         title: "Success",
-        description: "Supplier created successfully!",
+        description: "Client created successfully!",
         color: "green",
       });
       return response.data;
     } catch (error) {
-      console.error("Error in createSupplier:", error);
+      console.error("Error in createClient:", error);
       toast.add({
         title: "Error",
-        description: "Failed to create supplier.",
+        description: "Failed to create client.",
         color: "red",
       });
       throw error;
     }
   };
 
-  const updateSupplier = async (id: string, supplierData: any) => {
+  const updateClient = async (id: string, clientData: any) => {
     try {
-      const response = await $fetch<IApiResponse>(`/api/suppliers?id=${id}`, {
+      const response = await $fetch<IApiResponse>(`/api/clients?id=${id}`, {
         method: "PUT",
-        body: supplierData,
+        body: clientData,
       });
 
       if (!response.success) {
         toast.add({
           title: "Error",
-          description: response.message || "Failed to update supplier.",
+          description: response.message || "Failed to update client.",
           color: "red",
         });
         return null;
@@ -94,31 +94,31 @@ export function useSupplier() {
 
       toast.add({
         title: "Success",
-        description: "Supplier updated successfully!",
+        description: "Client updated successfully!",
         color: "green",
       });
       return response.data;
     } catch (error) {
-      console.error("Error in updateSupplier:", error);
+      console.error("Error in updateClient:", error);
       toast.add({
         title: "Error",
-        description: "Failed to update supplier.",
+        description: "Failed to update client.",
         color: "red",
       });
       throw error;
     }
   };
 
-  const deleteSupplier = async (id: string) => {
+  const deleteClient = async (id: string) => {
     try {
-      const response = await $fetch<IApiResponse>(`/api/suppliers?id=${id}`, {
+      const response = await $fetch<IApiResponse>(`/api/clients?id=${id}`, {
         method: "DELETE",
       });
 
       if (!response.success) {
         toast.add({
           title: "Error",
-          description: response.message || "Failed to delete supplier.",
+          description: response.message || "Failed to delete client.",
           color: "red",
         });
         return null;
@@ -126,15 +126,15 @@ export function useSupplier() {
 
       toast.add({
         title: "Success",
-        description: "Supplier deleted successfully!",
+        description: "Client deleted successfully!",
         color: "green",
       });
       return response;
     } catch (error) {
-      console.error("Error in deleteSupplier:", error);
+      console.error("Error in deleteClient:", error);
       toast.add({
         title: "Error",
-        description: "Failed to delete supplier.",
+        description: "Failed to delete client.",
         color: "red",
       });
       throw error;
@@ -142,11 +142,11 @@ export function useSupplier() {
   };
 
   return {
-    suppliers,
-    supplierFormState,
-    getAllSuppliers,
-    createSupplier,
-    updateSupplier,
-    deleteSupplier,
+    clients,
+    clientFormState,
+    getAllClients,
+    createClient,
+    updateClient,
+    deleteClient,
   };
 }

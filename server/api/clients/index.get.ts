@@ -21,15 +21,14 @@ export default defineEventHandler(async (event) => {
 
   try {
     const { data, error } = await supabase
-      .from("suppliers")
+      .from("clients")
       .select("*")
-      .order("created_at", { ascending: false });
 
     if (error) throw createError({ statusCode: 500, message: error.message });
 
     return { success: true, data };
   } catch (err) {
-    console.error("Error fetching suppliers:", err);
+    console.error("Error fetching clients:", err);
     return { success: false, message: "Internal Server Error" };
   }
 });

@@ -1,27 +1,27 @@
 <script setup>
 useSeoMeta({
-  title: "Payments",
-  ogTitle: "Payments",
-  description: "View and manage payment transactions.",
-  ogDescription: "Stay updated with all incoming and outgoing payments.",
+  title: "Tasks",
+  ogTitle: "Tasks",
+  description: "View and manage task transactions.",
+  ogDescription: "Stay updated with all incoming and outgoing tasks.",
 });
 
 const {
-  payments,
-  getAllPayments,
-  getSinglePayment,
-  deletePayment,
-  paymentFormState,
-  isEditingPayment,
-} = usePayment();
+  tasks,
+  getAllTasks,
+  getSingleTask,
+  deleteTask,
+  taskFormState,
+  isEditingTask,
+} = useTask();
 
 const isDrawerOpen = ref(false);
 
 const isDeleteModalOpen = ref(false);
 
-const selectedPaymentId = ref(null);
+const selectedTaskId = ref(null);
 
-const response = await getAllPayments();
+const response = await getAllTasks();
 
 const columns = ref([
   { key: "id", label: "ID", sortable: true },
@@ -34,31 +34,31 @@ const columns = ref([
 ]);
 
 const openEditDrawer = async (id) => {
-  isEditingPayment.value = true;
-  selectedPaymentId.value = id;
+  isEditingTask.value = true;
+  selectedTaskId.value = id;
   isDrawerOpen.value = true;
 
-  // Fetch the payment data and update the form state
-  const { data } = await getSinglePayment(id);
+  // Fetch the task data and update the form state
+  const { data } = await getSingleTask(id);
   if (data) {
-    paymentFormState.value = { ...data };
+    taskFormState.value = { ...data };
   }
 };
 
-const refreshPayments = async () => {
+const refreshTasks = async () => {
   isDrawerOpen.value = false;
-  await getAllPayments();
+  await getAllTasks();
 };
 
 const confirmDelete = (id) => {
-  selectedPaymentId.value = id;
+  selectedTaskId.value = id;
   isDeleteModalOpen.value = true;
 };
 
 const handleDelete = async () => {
-  if (selectedPaymentId.value) {
-    await deletePayment(selectedPaymentId.value);
-    await getAllPayments(); // Refresh list after deletion
+  if (selectedTaskId.value) {
+    await deleteTask(selectedTaskId.value);
+    await getAllTasks(); // Refresh list after deletion
   }
   isDeleteModalOpen.value = false;
 };
@@ -67,14 +67,14 @@ const handleDelete = async () => {
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">Payments</h1>
+      <h1 class="text-xl font-semibold">Tasks</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
-        Add Payment
+        Add Task
       </UButton>
     </div>
 
     <UCard>
-      <SharedDatagrid :columns="columns" :rows="payments">
+      <SharedDatagrid :columns="columns" :rows="tasks">
         <template #actions="{ row }">
           <div class="flex space-x-2">
             <UButton
@@ -109,13 +109,13 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Payment">
-      <FormsPaymentForm @cancel="refreshPayments" />
+    <SharedDrawer v-model="isDrawerOpen" title="Edit Task">
+      <FormsTaskForm @cancel="refreshTasks" />
     </SharedDrawer>
 
     <SharedModal
       :show="isDeleteModalOpen"
-      message="Are you sure you want to delete this payment?"
+      message="Are you sure you want to delete this task?"
       @confirm="handleDelete"
       @close="isDeleteModalOpen = false"
     />

@@ -1,27 +1,27 @@
 <script setup>
 useSeoMeta({
-  title: "Payments",
-  ogTitle: "Payments",
-  description: "View and manage payment transactions.",
-  ogDescription: "Stay updated with all incoming and outgoing payments.",
+  title: "Memos",
+  ogTitle: "Memos",
+  description: "Manage your memos efficiently.",
+  ogDescription: "Track and manage your memos easily.",
 });
 
 const {
-  payments,
-  getAllPayments,
-  getSinglePayment,
-  deletePayment,
-  paymentFormState,
-  isEditingPayment,
-} = usePayment();
+  employees,
+  getAllEmployees,
+  getSingleEmployee,
+  deleteEmployee,
+  employeeFormState,
+  isEditingEmployee,
+} = useEmployee();
 
 const isDrawerOpen = ref(false);
 
 const isDeleteModalOpen = ref(false);
 
-const selectedPaymentId = ref(null);
+const selectedEmployeeId = ref(null);
 
-const response = await getAllPayments();
+const response = await getAllEmployees();
 
 const columns = ref([
   { key: "id", label: "ID", sortable: true },
@@ -34,31 +34,31 @@ const columns = ref([
 ]);
 
 const openEditDrawer = async (id) => {
-  isEditingPayment.value = true;
-  selectedPaymentId.value = id;
+  isEditingEmployee.value = true;
+  selectedEmployeeId.value = id;
   isDrawerOpen.value = true;
 
-  // Fetch the payment data and update the form state
-  const { data } = await getSinglePayment(id);
+  // Fetch the employee data and update the form state
+  const { data } = await getSingleEmployee(id);
   if (data) {
-    paymentFormState.value = { ...data };
+    employeeFormState.value = { ...data };
   }
 };
 
-const refreshPayments = async () => {
+const refreshEmployees = async () => {
   isDrawerOpen.value = false;
-  await getAllPayments();
+  await getAllEmployees();
 };
 
 const confirmDelete = (id) => {
-  selectedPaymentId.value = id;
+  selectedEmployeeId.value = id;
   isDeleteModalOpen.value = true;
 };
 
 const handleDelete = async () => {
-  if (selectedPaymentId.value) {
-    await deletePayment(selectedPaymentId.value);
-    await getAllPayments(); // Refresh list after deletion
+  if (selectedEmployeeId.value) {
+    await deleteEmployee(selectedEmployeeId.value);
+    await getAllEmployees(); // Refresh list after deletion
   }
   isDeleteModalOpen.value = false;
 };
@@ -67,14 +67,14 @@ const handleDelete = async () => {
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">Payments</h1>
+      <h1 class="text-xl font-semibold">Memos</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
-        Add Payment
+        Add Employee
       </UButton>
     </div>
 
     <UCard>
-      <SharedDatagrid :columns="columns" :rows="payments">
+      <SharedDatagrid :columns="columns" :rows="employees">
         <template #actions="{ row }">
           <div class="flex space-x-2">
             <UButton
@@ -109,13 +109,13 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Payment">
-      <FormsPaymentForm @cancel="refreshPayments" />
+    <SharedDrawer v-model="isDrawerOpen" title="Edit Employee">
+      <FormsEmployeeForm @cancel="refreshEmployees" />
     </SharedDrawer>
 
     <SharedModal
       :show="isDeleteModalOpen"
-      message="Are you sure you want to delete this payment?"
+      message="Are you sure you want to delete this employee?"
       @confirm="handleDelete"
       @close="isDeleteModalOpen = false"
     />

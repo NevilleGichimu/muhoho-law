@@ -1,29 +1,31 @@
 export const admin = [
   {
     section: "General",
-    items: [{ label: "Dashboard", icon: "mdi:home", to: "/dashboard" }],
+    items: [
+      { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
+      { label: "Memos", icon: "mdi:pin", to: "/memos" },
+    ],
   },
   {
     section: "People",
     items: [
       { label: "Clients", icon: "mdi:account", to: "/clients" },
       { label: "Staff", icon: "mdi:account-group", to: "/staff" },
-      { label: "Teams", icon: "mdi:account", to: "/teams" },
     ],
   },
   {
     section: "Cases",
     items: [
-      { label: "All Cases", icon: "mdi:clipboard-list", to: "/inventory" },
+      { label: "All Cases", icon: "mdi:clipboard-list", to: "/cases" },
       { label: "Tasks & Todos", icon: "mdi:check", to: "/tasks" },
       { label: "Appointments", icon: "mdi:calendar", to: "/appointments" },
     ],
   },
   {
-    section: "Documents",
+    section: "Archive",
     items: [
-      { label: "Manage Documents", icon: "mdi:file", to: "/documents" },
-      { label: "Notes & Memos", icon: "mdi:note", to: "/notes" },
+      { label: "Publications", icon: "mdi:library", to: "/document-uploads" },
+      { label: "Notes", icon: "mdi:note", to: "/notes" },
     ],
   },
   {
@@ -59,19 +61,28 @@ export const admin = [
 export const lawyer = [
   {
     section: "General",
-    items: [{ label: "Dashboard", icon: "mdi:home", to: "/dashboard" }],
+    items: [
+      { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
+      { label: "Memos", icon: "mdi:pin", to: "/memos" },
+    ],
   },
   {
     section: "People",
     items: [
       { label: "Clients", icon: "mdi:account", to: "/clients" },
-      { label: "Teams", icon: "mdi:account-group", to: "/staff" },
+    ],
+  },
+  {
+    section: "Archive",
+    items: [
+      { label: "Publications", icon: "mdi:library", to: "/document-uploads" },
+      { label: "Notes", icon: "mdi:note", to: "/notes" },
     ],
   },
   {
     section: "My Work",
     items: [
-      { label: "Cases", icon: "mdi:clipboard-list", to: "/inventory" },
+      { label: "Cases", icon: "mdi:clipboard-list", to: "/cases" },
       { label: "Tasks & Todos", icon: "mdi:check", to: "/tasks" },
       { label: "Appointments", icon: "mdi:calendar", to: "/appointments" },
       { label: "Documents", icon: "mdi:file", to: "/documents" },
@@ -99,7 +110,7 @@ export const client = [
   {
     section: "Cases",
     items: [
-      { label: "All Cases", icon: "mdi:clipboard-list", to: "/inventory" },
+      { label: "All Cases", icon: "mdi:clipboard-list", to: "/cases" },
       { label: "Appointments", icon: "mdi:calendar", to: "/appointments" },
     ],
   },

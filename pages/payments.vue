@@ -24,13 +24,16 @@ const selectedPaymentId = ref(null);
 const response = await getAllPayments();
 
 const columns = ref([
-  { key: "id", label: "ID", sortable: true },
-  { key: "name", label: "Name" },
-  { key: "role", label: "Role" },
-  { key: "phone", label: "Phone" },
-  { key: "email", label: "Email" },
+  { key: "client_id", label: "Client" },
+  { key: "amount", label: "Amount" },
+  { key: "payment_method", label: "Payment Method" },
+  { key: "case_id", label: "Case" },
+  { key: "payment_date", label: "Payment Date" },
   { key: "status", label: "Status" },
-  { key: "hired_date", label: "Hired Date" },
+  { key: "description", label: "Description" },
+  { key: "balance", label: "Balance" },
+  { key: "due_date", label: "Due Date" },
+
 ]);
 
 const openEditDrawer = async (id) => {

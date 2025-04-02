@@ -1,9 +1,9 @@
 <script setup>
 useSeoMeta({
-  title: "Memos",
-  ogTitle: "Memos",
-  description: "Manage your memos efficiently.",
-  ogDescription: "Track and manage your memos easily.",
+  title: "Notes",
+  ogTitle: "Notes",
+  description: "Manage your notes efficiently.",
+  ogDescription: "Track and manage your notes easily.",
 });
 
 const {
@@ -13,7 +13,7 @@ const {
   deleteNote,
   noteFormState,
   isEditingNote,
-} = useNote();
+} = useNotes();
 
 const isDrawerOpen = ref(false);
 
@@ -25,12 +25,10 @@ const response = await getAllNotes();
 
 const columns = ref([
   { key: "id", label: "ID", sortable: true },
-  { key: "name", label: "Name" },
-  { key: "role", label: "Role" },
-  { key: "phone", label: "Phone" },
-  { key: "email", label: "Email" },
-  { key: "status", label: "Status" },
-  { key: "hired_date", label: "Hired Date" },
+  { key: "title", label: "Title" },
+  { key: "content", label: "Content" },
+  { key: "author_id", label: "Author" },
+  { key: "case_id", label: "Case" },
 ]);
 
 const openEditDrawer = async (id) => {
@@ -67,7 +65,7 @@ const handleDelete = async () => {
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">Memos</h1>
+      <h1 class="text-xl font-semibold">Notes</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
         Add Note
       </UButton>

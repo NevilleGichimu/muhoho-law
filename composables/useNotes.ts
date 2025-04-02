@@ -1,6 +1,6 @@
 import { useToast } from "#imports";
 
-export function useNote() {
+export function useNotes() {
   const toast = useToast();
 
   const isEditingNote = useState<boolean>(

@@ -25,12 +25,12 @@ const response = await getAllTasks();
 
 const columns = ref([
   { key: "id", label: "ID", sortable: true },
-  { key: "name", label: "Name" },
-  { key: "role", label: "Role" },
-  { key: "phone", label: "Phone" },
-  { key: "email", label: "Email" },
+  { key: "title", label: "Title" },
+  { key: "description", label: "Description" },
+  { key: "priority", label: "Priority" },
+  { key: "due_date", label: "Due Date" },
   { key: "status", label: "Status" },
-  { key: "hired_date", label: "Hired Date" },
+  { key: "assigned_to", label: "Assigned To" },
 ]);
 
 const openEditDrawer = async (id) => {
@@ -68,9 +68,7 @@ const handleDelete = async () => {
   <div>
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">Tasks</h1>
-      <UButton color="primary" @click="isDrawerOpen = true">
-        Add Task
-      </UButton>
+      <UButton color="primary" @click="isDrawerOpen = true"> Add Task </UButton>
     </div>
 
     <UCard>

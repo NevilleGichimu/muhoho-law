@@ -1,6 +1,6 @@
 import { useToast } from "#imports";
 
-export function useDocumentUpload() {
+export function useDocumentUploads() {
   const toast = useToast();
 
   const isEditingDocumentUpload = useState<boolean>(

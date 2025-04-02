@@ -22,11 +22,21 @@ const selectedCaseId = ref(null);
 const response = await getAllCases();
 
 const columns = ref([
-  { key: "id", label: "ID", sortable: true },
-  { key: "name", label: "Name" },
-  { key: "address", label: "Address" },
-  { key: "phone", label: "Phone" },
-  { key: "email", label: "Email" },
+  { key: "case_number", label: "case_number" },
+  { key: "title", label: "Title" },
+  { key: "case_stage", label: "Case Stage" },
+  { key: "status", label: "Status" },
+  { key: "case_type", label: "Case Type" },
+  { key: "client_id", label: "Client" },
+  { key: "description", label: "Description" },
+  { key: "lead_lawyer_id", label: "Lead Lawyer" },
+  { key: "filed_date", label: "Filed Date" },
+  { key: "opposing_party", label: "Opposing Party" },
+  { key: "opposing_lawyer", label: "Opposing Lawyer" },
+  { key: "billing_status", label: "Billing Status" },
+  { key: "opposing_party", label: "Opposing Party" },
+
+
 ]);
 
 const openEditDrawer = async (id) => {
@@ -64,9 +74,7 @@ const handleDelete = async () => {
   <div>
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">Cases</h1>
-      <UButton color="primary" @click="isDrawerOpen = true">
-        Add Case
-      </UButton>
+      <UButton color="primary" @click="isDrawerOpen = true"> Add Case </UButton>
     </div>
 
     <UCard>

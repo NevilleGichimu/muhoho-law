@@ -1,6 +1,6 @@
 import { useToast } from "#imports";
 
-export function useMemo() {
+export function useMemos() {
   const toast = useToast();
 
   const memos = ref([]);

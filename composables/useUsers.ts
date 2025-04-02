@@ -33,7 +33,7 @@ export function useUsers() {
         return null;
       }
 
-      console.log("response", response?.data);
+
 
       return response.data;
     } catch (error) {

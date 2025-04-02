@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
+
 useSeoMeta({
   title: "Dashboard",
   ogTitle: "Dashboard",
@@ -6,44 +8,58 @@ useSeoMeta({
   ogDescription: "Stay updated with your dashboard insights.",
 });
 
-const { counts, fetchCounts } = useDashboard();
+const stats = ref<any[]>([]);
 
-// Fetch the counts when the component is mounted
-onMounted(async () => {
-  await fetchCounts();
-});
+const fetchStats = async () => {
+  try {
+    const [casesResponse, clientsResponse, staffResponse, usersResponse] =
+      await Promise.all([
+        $fetch("/api/stats/cases"),
+        $fetch("/api/stats/clients"),
+        $fetch("/api/stats/staff"),
+        $fetch("/api/stats/users"),
+      ]);
 
-const charts = ref([
-  {
-    title: "Employees",
-    icon: "mdi:account-group",  // MDI icon for "Employees"
-    subTitle: "All employees",
-    total: counts.value.employees,
-    link: "/staff",
-  },
-  {
-    title: "Inventory",
-    icon: "mdi:clipboard-list",  // MDI icon for "Inventory"
-    subTitle: "All inventory",
-    total: counts.value.inventory,
-    link: "/inventory",
-  },
-  {
-    title: "Suppliers",
-    icon: "mdi:truck",  // MDI icon for "Suppliers"
-    subTitle: "All suppliers",
-    total: counts.value.suppliers,
-    link: "/suppliers",
-  },
-  {
-    title: "Products",
-    icon: "mdi:package",  // MDI icon for "Products"
-    subTitle: "All products",
-    total: counts.value.products,
-    link: "/products",
-  },
-]);
+    stats.value = [
+      {
+        title: "Cases",
+        icon: "mdi:file",
+        subTitle: "Ongoing cases",
+        total: casesResponse.count || 0,
+        link: "/cases",
+        color: "bg-blue-100 text-blue-600",
+      },
+      {
+        title: "Clients",
+        icon: "mdi:account",
+        subTitle: "All Clients",
+        total: clientsResponse.count || 0,
+        link: "/clients",
+        color: "bg-green-100 text-green-600",
+      },
+      {
+        title: "Staff",
+        icon: "mdi:account",
+        subTitle: "All Staff",
+        total: staffResponse.count || 0,
+        link: "/staff",
+        color: "bg-yellow-100 text-yellow-600",
+      },
+      {
+        title: "Users",
+        icon: "mdi:account-group",
+        subTitle: "System Users",
+        total: usersResponse.count || 0,
+        link: "/users",
+        color: "bg-red-100 text-red-600",
+      },
+    ];
+  } catch (error) {
+    console.error("Failed to fetch stats:", error);
+  }
+};
 
+onMounted(fetchStats);
 </script>
 
 <template>
@@ -51,17 +67,19 @@ const charts = ref([
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">Dashboard</h1>
     </div>
-    <!-- /* ------------------------------- Charts Data ------------------------------ */ -->
+    <!-- Charts Data -->
     <div class="grid grid-cols-12 gap-[15px] lg:gap-[15px]">
       <div
         class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-3"
-        v-for="item in charts"
+        v-for="item in stats"
+        :key="item.title"
       >
         <NuxtLink :to="item.link">
           <UCard class="h-full flex flex-col justify-center">
             <div class="flex gap-2">
               <div
-                class="rounded-full bg-primary h-8 w-8 flex items-center justify-center text-black"
+                class="rounded-full h-8 w-8 flex items-center justify-center"
+                :class="item.color"
               >
                 <Icon :name="item.icon" />
               </div>

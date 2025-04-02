@@ -58,8 +58,6 @@ const handleFileChange = async (event: any) => {
 
       if (uploadedFile) {
         // Check if the uploadedFile is valid and in the expected format
-        console.log("Uploaded file:", uploadedFile);
-
         // Push the uploaded file information into images array
         inventoryFormState.value.images.push(uploadedFile);
       } else {

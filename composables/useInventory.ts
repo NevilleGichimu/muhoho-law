@@ -43,7 +43,7 @@ export function useInventory() {
         return null;
       }
 
-      console.log("response", response?.data);
+
       return response.data;
     } catch (error) {
       console.error("Error in getAllinventory:", error);

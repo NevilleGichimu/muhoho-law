@@ -93,14 +93,12 @@ const seeDetail = async (item: FileObject) => {
 
 // Open the delete confirmation modal
 const confirmDelete = (id: any) => {
-  console.log("selectedImageName", selectedImageName.value);
   selectedImageName.value = id;
   isDeleteModalOpen.value = true;
 };
 
 // Handle image deletion
 const handleDelete = async () => {
-  console.log("called");
   if (!selectedImageName.value) return;
 
   loadingState.remove = true;

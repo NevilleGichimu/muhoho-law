@@ -1,44 +1,67 @@
-<script setup>
+<script setup lang="ts">
+import { admin, lawyer, client } from "~~/components/Navigation/SidebarItems";
+
 const commandPaletteRef = ref();
 
 const router = useRouter();
 
 const emit = defineEmits(["close"]);
 
-// Sidebar navigation items array
-const sidebarItems = [
-  {
-    section: "General",
-    items: [
-      { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
-      { label: "Employees", icon: "mdi:account-group", to: "/staff" },
-      { label: "Orders", icon: "mdi:cart", to: "/orders" },
-      { label: "Customers", icon: "mdi:account", to: "/customers" },
-      { label: "Products", icon: "mdi:package", to: "/products" },
-      { label: "Inventory", icon: "mdi:clipboard-list", to: "/inventory" },
-      { label: "Payments", icon: "mdi:credit-card", to: "/payments" },
-      { label: "Suppliers", icon: "mdi:truck", to: "/suppliers" },
-      { label: "Users", icon: "mdi:account-circle", to: "/users" },
-      {
-        label: "Attendance",
-        icon: "mdi:calendar-check", // MDI equivalent of calendar-check
-        to: "/attendance",
-      },
-      { label: "Storage", icon: "mdi:image", to: "/images-storage" },
-    ],
-  },
-  {
-    section: "Notifications",
-    items: [
-      { label: "Notifications", icon: "mdi:bell", to: "/notifications" },
-      { label: "Help", icon: "mdi:lifebuoy", to: "/dashboard/help" },
-    ],
-  },
-];
+// // Sidebar navigation items array
+// const sidebarItems = [
+//   {
+//     section: "General",
+//     items: [
+//       { label: "Dashboard", icon: "mdi:home", to: "/dashboard" },
+//       { label: "Employees", icon: "mdi:account-group", to: "/staff" },
+//       { label: "Orders", icon: "mdi:cart", to: "/orders" },
+//       { label: "Customers", icon: "mdi:account", to: "/customers" },
+//       { label: "Products", icon: "mdi:package", to: "/products" },
+//       { label: "Inventory", icon: "mdi:clipboard-list", to: "/inventory" },
+//       { label: "Payments", icon: "mdi:credit-card", to: "/payments" },
+//       { label: "Suppliers", icon: "mdi:truck", to: "/suppliers" },
+//       { label: "Users", icon: "mdi:account-circle", to: "/users" },
+//       {
+//         label: "Attendance",
+//         icon: "mdi:calendar-check", // MDI equivalent of calendar-check
+//         to: "/attendance",
+//       },
+//       { label: "Storage", icon: "mdi:image", to: "/images-storage" },
+//     ],
+//   },
+//   {
+//     section: "Notifications",
+//     items: [
+//       { label: "Notifications", icon: "mdi:bell", to: "/notifications" },
+//       { label: "Help", icon: "mdi:lifebuoy", to: "/dashboard/help" },
+//     ],
+//   },
+// ];
+
+const { auth: authAction } = useSupabaseClient();
+
+const userRole = useHashedCookie<string | null | undefined>("aa05f44d53a34");
+
+userRole.value = "admin";
+
+const getSidebarItems = (role: string | null | undefined) => {
+  switch (role) {
+    case "admin":
+      return admin;
+    case "lawyer":
+      return lawyer;
+    case "client":
+      return client;
+    default:
+      return []; // Empty array if role is not recognized
+  }
+};
+
+const sidebarItems = computed(() => getSidebarItems(userRole.value));
 
 const commands = [
   // Manually define shortcuts based on sidebarItems
-  ...sidebarItems.flatMap((section) =>
+  ...sidebarItems.value.flatMap((section) =>
     section.items.map((item) => ({
       id: item.label.toLowerCase().replace(/\s+/g, "-"), // Unique ID based on label
       label: item.label,
@@ -88,7 +111,7 @@ const ui = {
   },
 };
 
-function onSelect(option) {
+function onSelect(option: any) {
   if (option.click) {
     option.click();
   } else if (option.to) {

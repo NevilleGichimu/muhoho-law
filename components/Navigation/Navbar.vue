@@ -1,9 +1,13 @@
 <script setup lang="ts">
 const emit = defineEmits(["toggleSidebar", "openSearch"]);
+
 const { auth: authAction } = useSupabaseClient();
 
+const router = useRouter();
+
 const signOut = async () => {
-  await logout();
+  // await logout();
+  router.push("/");
 };
 
 // Theme options

@@ -19,10 +19,6 @@ export default defineEventHandler(async (event) => {
     // Get list of files from the bucket
     const { data, error } = await supabase.storage.from(bucketName).list();
 
-    console.log("wahome");
-
-    console.log("data", data);
-
     if (error) throw createError({ statusCode: 500, message: error.message });
 
     // Construct full public URLs

@@ -44,7 +44,6 @@ export const admin = [
         icon: "mdi:file",
         to: "/documents-storage",
       },
-      { label: "Analytics & Reports", icon: "mdi:chart-bar", to: "/reports" },
     ],
   },
   {

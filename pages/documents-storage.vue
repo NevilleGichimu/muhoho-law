@@ -93,14 +93,12 @@ const seeDetail = async (item: FileObject) => {
 
 // Open the delete confirmation modal
 const confirmDelete = (id: any) => {
-  console.log("selectedDocumentName", selectedDocumentName.value);
   selectedDocumentName.value = id;
   isDeleteModalOpen.value = true;
 };
 
 // Handle document deletion
 const handleDelete = async () => {
-  console.log("called");
   if (!selectedDocumentName.value) return;
 
   loadingState.remove = true;

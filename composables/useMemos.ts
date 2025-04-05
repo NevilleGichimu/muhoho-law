@@ -3,10 +3,7 @@ import { useToast } from "#imports";
 export function useMemos() {
   const toast = useToast();
 
-  const isEditingMemo = useState<boolean>(
-    "is-editing-memo",
-    () => false
-  );
+  const isEditingMemo = useState<boolean>("is-editing-memo", () => false);
 
   const userId = useHashedCookie<undefined | null | number>("b35db0c4e3bb4");
 
@@ -35,7 +32,6 @@ export function useMemos() {
       tags: [],
     };
   };
-
 
   const getAllMemos = async () => {
     try {
@@ -72,8 +68,7 @@ export function useMemos() {
       if (!response.success) {
         toast.add({
           title: "Error",
-          description:
-            response.message || "Failed to fetch memo details.",
+          description: response.message || "Failed to fetch memo details.",
           color: "red",
         });
         return null;

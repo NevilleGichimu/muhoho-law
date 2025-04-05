@@ -12,6 +12,7 @@ const {
   getSingleClient,
   deleteClient,
   clientFormState,
+  resetClientFormState,
   isEditingClient,
 } = useClient();
 
@@ -60,15 +61,19 @@ const handleDelete = async () => {
   }
   isDeleteModalOpen.value = false;
 };
+
+const newClient = async () => {
+  isDrawerOpen.value = true;
+  isEditingClient.value = false;
+  await resetClientFormState();
+};
 </script>
 
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">Clients</h1>
-      <UButton color="primary" @click="isDrawerOpen = true">
-        Add Client
-      </UButton>
+      <UButton color="primary" @click="newClient"> Add Client </UButton>
     </div>
 
     <UCard>
@@ -107,7 +112,10 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Client">
+    <SharedDrawer
+      v-model="isDrawerOpen"
+      :title="isEditingMemo ? 'Edit Client' : 'Add Client'"
+    >
       <FormsClientForm @cancel="refreshClients" />
     </SharedDrawer>
 

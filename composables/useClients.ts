@@ -5,22 +5,23 @@ export function useClient() {
 
   const clients = ref([]);
 
-  const isEditingClient = useState<boolean>(
-    "is-editing-client",
-    () => false
-  );
+  const isEditingClient = useState<boolean>("is-editing-client", () => false);
 
   const clientFormState = useState("client-formstate", () => ({
     name: "",
-    contact_person: "",
     phone_number: "",
     email: "",
     address: "",
-    category: "",
-    clients_supplied: [],
-    notes: "",
-    last_contact_date: ""
-    }));
+  }));
+
+  const resetClientFormState = () => {
+    clientFormState.value = {
+      name: "",
+      phone_number: "",
+      email: "",
+      address: "",
+    };
+  };
 
   const getAllClients = async () => {
     try {
@@ -75,6 +76,33 @@ export function useClient() {
       toast.add({
         title: "Error",
         description: "Failed to create client.",
+        color: "red",
+      });
+      throw error;
+    }
+  };
+
+  const getSingleClient = async (id: string) => {
+    try {
+      const response = await $fetch<IApiResponse>(`/api/clients/single`, {
+        query: { id },
+      });
+
+      if (!response.success) {
+        toast.add({
+          title: "Error",
+          description: response.message || "Failed to fetch client details.",
+          color: "red",
+        });
+        return null;
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Error in getSingleClient:", error);
+      toast.add({
+        title: "Error",
+        description: "Failed to fetch client details.",
         color: "red",
       });
       throw error;
@@ -153,6 +181,8 @@ export function useClient() {
     getAllClients,
     createClient,
     updateClient,
+    getSingleClient,
     deleteClient,
+    resetClientFormState,
   };
 }

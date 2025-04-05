@@ -27,8 +27,8 @@ const handleSubmit = async () => {
       <UInput v-model="clientFormState.name" />
     </UFormGroup>
 
-    <UFormGroup class="py-3" label="Phone" name="phone">
-      <UInput v-model="clientFormState.phone" type="tel" />
+    <UFormGroup class="py-3" label="Phone" name="phone_number">
+      <UInput v-model="clientFormState.phone_number" type="tel" />
     </UFormGroup>
 
     <UFormGroup class="py-3" label="Email" name="email">

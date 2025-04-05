@@ -1,16 +1,12 @@
 <script setup>
-const { updateStaff, createStaff, staffFormState, isEditingStaff } =
-  useStaff();
+const { updateStaff, createStaff, staffFormState, isEditingStaff } = useStaff();
 const emit = defineEmits(["save", "cancel"]);
 
 const handleSubmit = async () => {
   let response;
 
   if (isEditingStaff.value) {
-    response = await updateStaff(
-      staffFormState.value.id,
-      staffFormState.value
-    );
+    response = await updateStaff(staffFormState.value.id, staffFormState.value);
   } else {
     response = await createStaff(staffFormState.value);
   }
@@ -21,6 +17,7 @@ const handleSubmit = async () => {
 
   await emit("cancel");
 };
+
 </script>
 
 <template>
@@ -28,20 +25,25 @@ const handleSubmit = async () => {
     <UFormGroup class="py-3" label="Name" name="name">
       <UInput v-model="staffFormState.name" />
     </UFormGroup>
+
     <UFormGroup class="py-3" label="Role" name="role">
       <UInput v-model="staffFormState.role" />
     </UFormGroup>
+
     <UFormGroup class="py-3" label="Phone" name="phone">
       <UInput v-model="staffFormState.phone" type="tel" />
     </UFormGroup>
+
     <UFormGroup class="py-3" label="Email" name="email">
       <UInput v-model="staffFormState.email" type="email" />
     </UFormGroup>
+
     <UFormGroup class="py-3" label="Hired Date" name="hired_date">
       <UInput v-model="staffFormState.hired_date" type="date" />
     </UFormGroup>
+
     <UFormGroup class="py-3" label="Status" name="status">
-      <USelect
+      <USelectMenu
         v-model="staffFormState.status"
         :options="['Active', 'Inactive']"
       />

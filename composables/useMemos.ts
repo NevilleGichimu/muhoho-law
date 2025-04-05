@@ -3,15 +3,19 @@ import { useToast } from "#imports";
 export function useMemos() {
   const toast = useToast();
 
+  const userId = useHashedCookie<undefined | null | number>("b35db0c4e3bb4");
+
   const memos = ref([]);
 
   const memoFormState = useState("memo-formstate", () => ({
-    name: "",
-    description: "",
-    price: 0,
-    images: [],
-    stock: 0,
-    category: "",
+    case_id: "",
+    author_id: "",
+    title: "",
+    content: "",
+    status: "",
+    priority: "",
+    visibility: "",
+    tags: [],
   }));
 
   const getAllMemos = async () => {
@@ -40,11 +44,13 @@ export function useMemos() {
     }
   };
 
-  const createMemo = async (memoData: any) => {
+  const createMemo = async () => {
     try {
+      memoFormState.value.author_id = userId.value;
+
       const response = await $fetch<IApiResponse>("/api/memos", {
         method: "POST",
-        body: memoData,
+        body: memoFormState.value,
       });
 
       if (!response.success) {

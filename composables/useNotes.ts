@@ -11,10 +11,10 @@ export function useNotes() {
   const notes = ref([]);
 
   const noteFormState = useState("note-formstate", () => ({
-    name: "",
-    address: "",
-    phone: "",
-    email: "",
+    title: "",
+    content: "",
+    author_id: "",
+    case_id: "",
   }));
 
   const getAllNotes = async () => {

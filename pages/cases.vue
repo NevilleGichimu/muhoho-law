@@ -31,12 +31,9 @@ const columns = ref([
   { key: "description", label: "Description" },
   { key: "lead_lawyer_id", label: "Lead Lawyer" },
   { key: "filed_date", label: "Filed Date" },
-  { key: "opposing_party", label: "Opposing Party" },
   { key: "opposing_lawyer", label: "Opposing Lawyer" },
   { key: "billing_status", label: "Billing Status" },
   { key: "opposing_party", label: "Opposing Party" },
-
-
 ]);
 
 const openEditDrawer = async (id) => {

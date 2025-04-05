@@ -25,14 +25,14 @@ const response = await getAllMemos();
 
 const columns = ref([
   { key: "id", label: "ID", sortable: true },
-  { key: "case_id", label: "Case" },
-  { key: "author_id", label: "Author" },
+  { key: "case.title", label: "Case" },
+  { key: "users.full_name", label: "Author" },
   { key: "title", label: "Title" },
   { key: "content", label: "Content" },
   { key: "status", label: "Status" },
   { key: "priority", label: "Priority" },
   { key: "visibility", label: "Visibility" },
-  { key: "tags", label: "Tags" },
+  // { key: "tags", label: "Tags" },
 
 ]);
 

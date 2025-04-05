@@ -11,11 +11,18 @@ export function useCase() {
   const cases = ref([]);
 
   const caseFormState = useState("cases-formstate", () => ({
-    date: "",
-    check_in: "",
-    check_out: "",
-    notes: "",
-    employee_id: "",
+    case_number: "",
+    title: "",
+    case_stage: "",
+    status: "",
+    case_type: "",
+    client_id: "",
+    description: "",
+    lead_lawyer_id: "",
+    filed_date: "",
+    opposing_party: "",
+    opposing_lawyer: "",
+    billing_status: "",
   }));
 
   const getAllCases = async () => {

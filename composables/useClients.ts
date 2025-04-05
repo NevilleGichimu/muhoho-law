@@ -5,6 +5,11 @@ export function useClient() {
 
   const clients = ref([]);
 
+  const isEditingClient = useState<boolean>(
+    "is-editing-client",
+    () => false
+  );
+
   const clientFormState = useState("client-formstate", () => ({
     name: "",
     contact_person: "",
@@ -144,6 +149,7 @@ export function useClient() {
   return {
     clients,
     clientFormState,
+    isEditingClient,
     getAllClients,
     createClient,
     updateClient,

@@ -3,10 +3,7 @@ import { useToast } from "#imports";
 export function useStaff() {
   const toast = useToast();
 
-  const isEditingStaff = useState<boolean>(
-    "is-editing-staff",
-    () => false
-  );
+  const isEditingStaff = useState<boolean>("is-editing-staff", () => false);
 
   const staff = ref([]);
 
@@ -18,6 +15,17 @@ export function useStaff() {
     hired_date: "",
     status: "Active",
   }));
+
+  const resetStaffFormState = () => {
+    staffFormState.value = {
+      name: "",
+      role: "",
+      phone: "",
+      email: "",
+      hired_date: "",
+      status: "Active",
+    };
+  };
 
   const getAllStaff = async () => {
     try {
@@ -32,8 +40,6 @@ export function useStaff() {
         });
         return null;
       }
-
-
 
       return response.data;
     } catch (error) {
@@ -175,6 +181,7 @@ export function useStaff() {
   return {
     staff,
     isEditingStaff,
+    resetStaffFormState,
     staffFormState,
     getAllStaff,
     getSingleStaff,

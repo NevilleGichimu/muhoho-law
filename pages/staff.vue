@@ -12,6 +12,7 @@ const {
   getSingleStaff,
   deleteStaff,
   staffFormState,
+  resetStaffFormState,
   isEditingStaff,
 } = useStaff();
 
@@ -62,13 +63,19 @@ const handleDelete = async () => {
   }
   isDeleteModalOpen.value = false;
 };
+
+const newStaff = async () => {
+  isDrawerOpen.value = true;
+  isEditingStaff.value = false;
+  await resetStaffFormState();
+};
 </script>
 
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">Staff</h1>
-      <UButton color="primary" @click="isDrawerOpen = true">
+      <UButton color="primary" @click="newStaff">
         Add Staff
       </UButton>
     </div>
@@ -109,7 +116,10 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Staff">
+    <SharedDrawer
+      v-model="isDrawerOpen"
+      :title="isEditingStaff ? 'Edit Staff' : 'Add Staff'"
+    >
       <FormsStaffForm @cancel="refreshStaff" />
     </SharedDrawer>
 

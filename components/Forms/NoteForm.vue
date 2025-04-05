@@ -64,9 +64,9 @@ const handleSubmit = async () => {
       <UInput v-model="noteFormState.content" />
     </UFormGroup>
 
-    <UFormGroup class="py-3" label="Author" name="author_id">
+    <!-- <UFormGroup class="py-3" label="Author" name="author_id">
       <UInput v-model="noteFormState.author_id" />
-    </UFormGroup>
+    </UFormGroup> -->
 
     <div class="flex justify-end space-x-2">
       <UButton color="gray" @click="$emit('cancel')">Cancel</UButton>

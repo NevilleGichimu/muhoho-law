@@ -47,11 +47,11 @@ const handleSubmit = async () => {
   emit("cancel");
 };
 
-const statusLevels = ref(["Draft", "In Progress", "Completed"]);
+// const statusLevels = ref(["Draft", "In Progress", "Completed"]);
 
 const priorityLevels = ref(["High", "Medium", "Low"]);
 
-const visibilityLevels = ref(["Internal", "Client", "External"]);
+const visibilityLevels = ref(["Internal", "Client"]);
 </script>
 
 <template>
@@ -76,14 +76,14 @@ const visibilityLevels = ref(["Internal", "Client", "External"]);
       <UTextarea v-model="memoFormState.content" />
     </UFormGroup>
 
-    <UFormGroup class="py-3" label="Status" name="status">
+    <!-- <UFormGroup class="py-3" label="Status" name="status">
       <USelectMenu
         v-model="memoFormState.status"
         :options="statusLevels"
         placeholder="Select Status"
         searchable
       />
-    </UFormGroup>
+    </UFormGroup> -->
 
     <UFormGroup class="py-3" label="Priority" name="priority">
       <USelectMenu

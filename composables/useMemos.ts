@@ -3,6 +3,11 @@ import { useToast } from "#imports";
 export function useMemos() {
   const toast = useToast();
 
+  const isEditingMemo = useState<boolean>(
+    "is-editing-memo",
+    () => false
+  );
+
   const userId = useHashedCookie<undefined | null | number>("b35db0c4e3bb4");
 
   const memos = ref([]);
@@ -17,6 +22,20 @@ export function useMemos() {
     visibility: "",
     tags: [],
   }));
+
+  const resetMemoFormState = () => {
+    memoFormState.value = {
+      case_id: "",
+      author_id: "",
+      title: "",
+      content: "",
+      status: "",
+      priority: "",
+      visibility: "",
+      tags: [],
+    };
+  };
+
 
   const getAllMemos = async () => {
     try {
@@ -38,6 +57,34 @@ export function useMemos() {
       toast.add({
         title: "Error",
         description: "Failed to fetch memos.",
+        color: "red",
+      });
+      throw error;
+    }
+  };
+
+  const getSingleMemo = async (id: string) => {
+    try {
+      const response = await $fetch<IApiResponse>(`/api/memos/single`, {
+        query: { id },
+      });
+
+      if (!response.success) {
+        toast.add({
+          title: "Error",
+          description:
+            response.message || "Failed to fetch memo details.",
+          color: "red",
+        });
+        return null;
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Error in getSingleMemo:", error);
+      toast.add({
+        title: "Error",
+        description: "Failed to fetch memo details.",
         color: "red",
       });
       throw error;
@@ -147,9 +194,12 @@ export function useMemos() {
   return {
     memos,
     memoFormState,
+    isEditingMemo,
+    getSingleMemo,
     getAllMemos,
     createMemo,
     updateMemo,
     deleteMemo,
+    resetMemoFormState,
   };
 }

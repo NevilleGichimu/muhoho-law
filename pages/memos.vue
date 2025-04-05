@@ -13,6 +13,7 @@ const {
   deleteMemo,
   memoFormState,
   isEditingMemo,
+  resetMemoFormState,
 } = useMemos();
 
 const isDrawerOpen = ref(false);
@@ -29,7 +30,7 @@ const columns = ref([
   { key: "users.full_name", label: "Author" },
   { key: "title", label: "Title" },
   { key: "content", label: "Content" },
-  { key: "status", label: "Status" },
+  // { key: "status", label: "Status" },
   { key: "priority", label: "Priority" },
   { key: "visibility", label: "Visibility" },
   // { key: "tags", label: "Tags" },
@@ -65,13 +66,19 @@ const handleDelete = async () => {
   }
   isDeleteModalOpen.value = false;
 };
+
+const newMemo = async () => {
+  isDrawerOpen.value = true
+  isEditingMemo.value = false
+  await resetMemoFormState()
+}
 </script>
 
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-xl font-semibold">Memos</h1>
-      <UButton color="primary" @click="isDrawerOpen = true">
+      <UButton color="primary" @click="newMemo()">
         Add Memo
       </UButton>
     </div>
@@ -112,7 +119,7 @@ const handleDelete = async () => {
       </SharedDatagrid>
     </UCard>
 
-    <SharedDrawer v-model="isDrawerOpen" title="Edit Memo">
+    <SharedDrawer v-model="isDrawerOpen" :title="isEditingMemo ? 'Edit Memo' : 'Add Memo'">
       <FormsMemoForm @cancel="refreshMemos" />
     </SharedDrawer>
 

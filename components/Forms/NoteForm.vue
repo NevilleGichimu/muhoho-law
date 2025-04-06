@@ -3,6 +3,8 @@ const { createNote, updateNote, noteFormState } = useNotes();
 
 const emit = defineEmits(["save", "cancel"]);
 
+const userId = useHashedCookie<undefined | null | number>("b35db0c4e3bb4");
+
 const { getAllCases } = useCase();
 
 const cases = ref<{ id: number; name: string }[]>([]); // or whatever your case structure is
@@ -36,6 +38,7 @@ const handleSubmit = async () => {
   if (noteFormState.value.id) {
     response = await updateNote(noteFormState.value.id, noteFormState.value);
   } else {
+    noteFormState.value.author_id = userId.value
     response = await createNote(noteFormState.value);
   }
 

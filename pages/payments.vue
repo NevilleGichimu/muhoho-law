@@ -70,9 +70,9 @@ const handleDelete = async () => {
 <template>
   <div>
     <div class="flex justify-between items-center mb-4">
-      <h1 class="text-xl font-semibold">Payments</h1>
+      <h1 class="text-xl font-semibold">Billing</h1>
       <UButton color="primary" @click="isDrawerOpen = true">
-        Add Payment
+        Add Billing
       </UButton>
     </div>
 

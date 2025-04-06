@@ -10,15 +10,34 @@ useSeoMeta({
 
 const stats = ref<any[]>([]);
 
+// Get role from hashed cookie
+const userRole = useHashedCookie<string | null | undefined>("aa05f44d53a34");
+
 const fetchStats = async () => {
   try {
-    const [casesResponse, clientsResponse, staffResponse, usersResponse] =
-      await Promise.all([
-        $fetch("/api/stats/cases"),
-        $fetch("/api/stats/clients"),
-        $fetch("/api/stats/staff"),
-        $fetch("/api/stats/users"),
-      ]);
+    const casesResponse = await $fetch("/api/stats/cases");
+
+    // If the user is a client, only show the cases card
+    if (userRole.value === "client") {
+      stats.value = [
+        {
+          title: "Cases",
+          icon: "mdi:file",
+          subTitle: "Ongoing cases",
+          total: casesResponse.count || 0,
+          link: "/cases",
+          color: "bg-blue-100 text-blue-600",
+        },
+      ];
+      return;
+    }
+
+    // Otherwise, fetch all other stats
+    const [clientsResponse, staffResponse, usersResponse] = await Promise.all([
+      $fetch("/api/stats/clients"),
+      $fetch("/api/stats/staff"),
+      $fetch("/api/stats/users"),
+    ]);
 
     stats.value = [
       {
@@ -61,6 +80,7 @@ const fetchStats = async () => {
 
 onMounted(fetchStats);
 </script>
+
 
 <template>
   <div>

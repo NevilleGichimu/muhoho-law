@@ -25,8 +25,8 @@ const columns = ref([
   { key: "title", label: "Title" },
   { key: "public_url", label: "Download" },
   { key: "category", label: "Category" },
-  { key: "case_id", label: "Case" },
-  { key: "uploaded_by", label: "Author" },
+  { key: "case.title", label: "Case" },
+  { key: "users.full_name", label: "Author" },
 ]);
 
 const openEditDrawer = async (id) => {
@@ -85,6 +85,14 @@ const handleDelete = async () => {
               @click="confirmDelete(row.id)"
             />
           </div>
+        </template>
+
+        <!-- <template #status="{ row }">
+          <UButton> Download </UButton>
+        </template> -->
+
+        <template #public_url="{ row }">
+          <UButton :to="row.public_url" target="_blank"> Download </UButton>
         </template>
       </SharedDatagrid>
     </UCard>

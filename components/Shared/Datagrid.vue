@@ -31,8 +31,16 @@ const columnsTable = computed(() => {
       <slot name="role" :row="row" />
     </template>
 
+    <template #download-data="{ row }">
+      <slot name="download" :row="row" />
+    </template>
+
     <template #status-data="{ row }">
       <slot name="status" :row="row" />
+    </template>
+
+    <template #public_url-data="{ row }">
+      <slot name="public_url" :row="row" />
     </template>
 
     <template #category-data="{ row }">

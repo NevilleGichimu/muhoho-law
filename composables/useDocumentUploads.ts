@@ -11,11 +11,11 @@ export function useDocumentUploads() {
   const document_uploads = ref([]);
 
   const document_uploadsFormState = useState("document_uploads-formstate", () => ({
-    date: "",
-    check_in: "",
-    check_out: "",
-    notes: "",
-    employee_id: "",
+    title: "",
+    category: "",
+    public_url: "",
+    case_id: "",
+    author_id: "",
   }));
 
   const getAllDocumentUploads = async () => {
@@ -181,3 +181,4 @@ export function useDocumentUploads() {
     deleteDocumentUpload,
   };
 }
+

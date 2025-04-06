@@ -22,7 +22,8 @@ export default defineEventHandler(async (event) => {
   try {
     const { data, error } = await supabase
       .from("notes")
-      .select("*")
+      // .select("*")
+      .select("*, users:users(*), cases:cases(*)")
 
     if (error) throw createError({ statusCode: 500, message: error.message });
 

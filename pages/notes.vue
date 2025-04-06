@@ -27,8 +27,8 @@ const columns = ref([
   { key: "id", label: "ID", sortable: true },
   { key: "title", label: "Title" },
   { key: "content", label: "Content" },
-  { key: "author_id", label: "Author" },
-  { key: "case_id", label: "Case" },
+  { key: "users.full_name", label: "Author" },
+  { key: "cases.title", label: "Case" },
 ]);
 
 const openEditDrawer = async (id) => {

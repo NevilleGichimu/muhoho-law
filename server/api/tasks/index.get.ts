@@ -20,7 +20,9 @@ export default defineEventHandler(async (event) => {
   try {
     const { data, error } = await supabase
       .from("tasks")
-      .select("*")
+      // .select("*")
+      .select("*, users:users(full_name)")
+
 
     if (error) throw createError({ statusCode: 500, message: error.message });
 

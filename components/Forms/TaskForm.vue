@@ -1,6 +1,10 @@
-<script setup>
+<script setup lang="ts">
 const { createTask, updateTask, taskFormState } = useTask();
 const emit = defineEmits(["save", "cancel"]);
+
+const toast = useToast();
+
+const { getAllUsers } = useUsers();
 
 const handleSubmit = async () => {
   let response;
@@ -20,6 +24,44 @@ const handleSubmit = async () => {
 const priorityLevels = ref(["High", "Medium", "Low"]);
 
 const statusLevels = ref(["Draft", "In Progress", "Completed"]);
+
+const clientOptions = ref<{ label: string; value: string }[]>([]);
+const fetchUsers = async () => {
+  try {
+    const usersResponse = await getAllUsers();
+    // Adjust filtering logic based on your backend data structure
+    clientOptions.value = usersResponse.map((user: any) => ({
+      label: user.full_name,
+      value: user.id,
+    }));
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    toast.add({
+      title: "Error",
+      description: "Failed to load user options.",
+      color: "red",
+      id: "user-fetch-error",
+    });
+  }
+};
+
+// Computed binding for Client selection
+const selectedClient = computed({
+  get() {
+    return (
+      clientOptions.value.find(
+        (option) => option.value === taskFormState.value.assigned_to
+      ) || null
+    );
+  },
+  set(newOption) {
+    taskFormState.value.assigned_to = newOption ? newOption.value : null;
+  },
+});
+
+onMounted(() => {
+  fetchUsers();
+});
 </script>
 
 <template>
@@ -34,7 +76,7 @@ const statusLevels = ref(["Draft", "In Progress", "Completed"]);
 
     <UFormGroup class="py-3" label="Priority" name="priority">
       <USelectMenu
-        v-model="memoFormState.priority"
+        v-model="taskFormState.priority"
         :options="priorityLevels"
         placeholder="Select Priority"
         searchable
@@ -42,15 +84,23 @@ const statusLevels = ref(["Draft", "In Progress", "Completed"]);
     </UFormGroup>
 
     <UFormGroup class="py-3" label="Due Date" name="due_date">
-      <UInput v-model="taskFormState.due_date" />
+      <UInput v-model="taskFormState.due_date" type="date" />
     </UFormGroup>
 
     <UFormGroup class="py-3" label="Status" name="status">
       <USelectMenu
-        v-model="memoFormState.status"
+        v-model="taskFormState.status"
         :options="statusLevels"
         placeholder="Select Status"
         searchable
+      />
+    </UFormGroup>
+
+    <UFormGroup class="py-3" label="Assign to" name="assigned_to">
+      <USelectMenu
+        v-model="selectedClient"
+        :options="clientOptions"
+        placeholder="Assign to "
       />
     </UFormGroup>
 

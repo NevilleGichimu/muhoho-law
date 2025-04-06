@@ -58,6 +58,8 @@ const handleDelete = async () => {
   }
   isDeleteModalOpen.value = false;
 };
+
+
 </script>
 
 <template>
@@ -73,11 +75,11 @@ const handleDelete = async () => {
       <SharedDatagrid :columns="columns" :rows="document_uploads">
         <template #actions="{ row }">
           <div class="flex space-x-2">
-            <UButton
+            <!-- <UButton
               icon="mdi:pencil"
               size="xs"
               @click="openEditDrawer(row.id)"
-            />
+            /> -->
             <UButton
               icon="mdi:trash-can"
               color="red"

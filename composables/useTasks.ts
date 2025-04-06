@@ -6,12 +6,12 @@ export function useTask() {
   const tasks = ref([]);
 
   const taskFormState = useState("task-formstate", () => ({
-    name: "",
+    title: "",
     description: "",
-    price: 0,
-    images: [],
-    stock: 0,
-    category: "",
+    priority: "",
+    due_date: "",
+    status: "",
+    assigned_to: "",
   }));
 
   const getAllTasks = async () => {

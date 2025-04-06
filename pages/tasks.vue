@@ -30,7 +30,7 @@ const columns = ref([
   { key: "priority", label: "Priority" },
   { key: "due_date", label: "Due Date" },
   { key: "status", label: "Status" },
-  { key: "assigned_to", label: "Assigned To" },
+  { key: "users.full_name", label: "Assigned To" },
 ]);
 
 const openEditDrawer = async (id) => {

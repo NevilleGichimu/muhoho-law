@@ -1,30 +1,26 @@
 <script setup lang="ts">
-// Composables for case operations and user data
 const {
   updateDocumentUpload,
   createDocumentUpload,
-  document_uploadsFormState,
+  documentUploadsFormState,
   isEditingDocumentUpload,
 } = useDocumentUploads();
 const { getAllUsers } = useUsers();
 const toast = useToast();
 
-const { uploadDocuments } = useSupabaseDocuments();
-
-const selectedFiles = ref<File[]>([]);
+const { uploadFile } = useDocumentStorage();
 
 // Emits for handling events
 const emit = defineEmits(["save", "cancel"]);
 
 const { getAllCases } = useCase();
 
-const cases = ref<{ id: number; name: string }[]>([]); // or whatever your case structure is
+const cases = ref<{ id: number; name: string }[]>([]);
 
 onMounted(async () => {
   const response = await getAllCases();
-
   cases.value = response.map((c: any) => ({
-    label: c.title || `Case #${c.id}`, // adjust this depending on your case fields
+    label: c.title || `Case #${c.id}`, // Adjust according to your case fields
     value: c.id,
   }));
 });
@@ -34,12 +30,12 @@ const selectedCase = computed({
   get() {
     return (
       cases.value.find(
-        (option) => option.value === document_uploadsFormState.value.case_id
+        (option) => option.value === documentUploadsFormState.value.case_id
       ) ?? null
     );
   },
   set(newOption) {
-    document_uploadsFormState.value.case_id = newOption?.value ?? null;
+    documentUploadsFormState.value.case_id = newOption?.value ?? null;
   },
 });
 
@@ -51,22 +47,16 @@ const categoryOptions = ref([
   "Filing",
 ]);
 
-// Client and Lead Lawyer options fetched from the backend
-const clientOptions = ref<{ label: string; value: string }[]>([]);
+// Client options fetched from the backend
+const authorOptions = ref<{ label: string; value: string }[]>([]);
 
 const fetchUsers = async () => {
   try {
     const usersResponse = await getAllUsers();
-    clientOptions.value = usersResponse.map((user: any) => ({
+    authorOptions.value = usersResponse.map((user: any) => ({
       label: user.full_name,
       value: user.id,
     }));
-    // leadLawyerOptions.value = usersResponse
-    //   .filter((user: any) => user.role === "lawyer")
-    //   .map((user: any) => ({
-    //     label: user.full_name,
-    //     value: user.id,
-    //   }));
   } catch (error) {
     console.error("Error fetching users:", error);
     toast.add({
@@ -82,93 +72,78 @@ onMounted(() => {
   fetchUsers();
 });
 
-// Computed binding for Client selection
-const selectedClient = computed({
+// Computed binding for Author selection
+const selectedAuthor = computed({
   get() {
     return (
-      clientOptions.value.find(
-        (option) => option.value === document_uploadsFormState.value.author_id
+      authorOptions.value.find(
+        (option) => option.value === documentUploadsFormState.value.uploaded_by
       ) || null
     );
   },
   set(newOption) {
-    document_uploadsFormState.value.author_id = newOption
+    documentUploadsFormState.value.uploaded_by = newOption
       ? newOption.value
       : null;
   },
 });
 
-// Computed binding for Lead Lawyer selection
-const selectedLeadLawyer = computed({
-  get() {
-    return (
-      leadLawyerOptions.value.find(
-        (option) =>
-          option.value === document_uploadsFormState.value.lead_lawyer_id
-      ) || null
-    );
-  },
-  set(newOption) {
-    document_uploadsFormState.value.lead_lawyer_id = newOption
-      ? newOption.value
-      : null;
-  },
+const loadingState = reactive({
+  get: false,
+  upload: false,
+  remove: false,
 });
 
-// const handleSubmit = async () => {
-//   let response;
+// This ref will hold the uploaded file URL
+const fileUrl = ref<string | undefined>();
 
-//   if (document_uploadsFormState.value.id) {
-//     response = await updateDocumentUpload(
-//       document_uploadsFormState.value.id,
-//       document_uploadsFormState.value
-//     );
-//   } else {
-//     response = await createDocumentUpload(document_uploadsFormState.value);
-//   }
-
-//   if (response.success) {
-//     emit("save", response.data);
-//   }
-//   emit("cancel");
-// };
 const handleSubmit = async () => {
-  if (selectedFiles.value.length > 0) {
-    const uploadedDocs = await uploadDocuments(
-      selectedFiles.value,
-      "document_uploads"
-    );
-
-    if (uploadedDocs.length > 0) {
-      document_uploadsFormState.value.public_url = uploadedDocs[0].url;
-    }
+  // Before submitting, set the public_url field from the uploaded file URL
+  if (fileUrl.value) {
+    documentUploadsFormState.value.public_url = fileUrl.value;
   }
 
   let response;
 
-  if (document_uploadsFormState.value.id) {
+  if (documentUploadsFormState.value.id) {
     response = await updateDocumentUpload(
-      document_uploadsFormState.value.id,
-      document_uploadsFormState.value
+      documentUploadsFormState.value.id,
+      documentUploadsFormState.value
     );
   } else {
-    response = await createDocumentUpload(document_uploadsFormState.value);
+    response = await createDocumentUpload(documentUploadsFormState.value);
   }
 
-  if (response.success) {
-    emit("save", response.data);
-  }
-
+  // if (response.success) {
+  //   emit("save", response.data);
+  // }
   emit("cancel");
 };
 
+const selectFile = () => {
+  document.getElementById("input-file-upload")?.click();
+};
 
+// Upload a file using the uploadFile function
+const upload = async (event: any) => {
+  try {
+    const file = event.target.files[0];
+    loadingState.upload = true;
+    const uploadedFile = await uploadFile(file);
+    fileUrl.value = uploadedFile?.url;
+    console.log("Uploaded file URL:", fileUrl.value);
+  } catch (error) {
+    toast.add({ color: "red", title: "Upload failed." });
+  } finally {
+    loadingState.upload = false;
+  }
+};
 </script>
 
 <template>
-  <UForm @submit.prevent="handleSubmit" :state="document_uploadsFormState">
+  <UForm @submit.prevent="handleSubmit" :state="documentUploadsFormState">
     <UFormGroup class="py-3" label="Document Title" name="title">
-      <UInput v-model="document_uploadsFormState.title" />
+      <UInput v-model="documentUploadsFormState.title" />
     </UFormGroup>
 
     <UFormGroup class="py-3" label="Case" name="case_id">
@@ -179,17 +154,9 @@ const handleSubmit = async () => {
       />
     </UFormGroup>
 
-    <!-- Case Stage -->
-    <!-- <UFormGroup class="py-3" label="Category" name="category">
-      <USelectMenu
-        v-model="document_uploadsFormState.category"
-        :options="categoryOptions"
-        placeholder="Select category"
-      />
-    </UFormGroup> -->
     <UFormGroup class="py-3" label="Category" name="category">
       <USelectMenu
-        v-model="document_uploadsFormState.category"
+        v-model="documentUploadsFormState.category"
         :options="categoryOptions"
         placeholder="Select category"
         searchable
@@ -197,22 +164,32 @@ const handleSubmit = async () => {
     </UFormGroup>
 
     <!-- Client -->
-    <UFormGroup class="py-3" label="Client" name="author_id">
+    <UFormGroup class="py-3" label="Client" name="uploaded_by">
       <USelectMenu
-        v-model="selectedClient"
-        :options="clientOptions"
+        v-model="selectedAuthor"
+        :options="authorOptions"
         placeholder="Select a Client"
       />
     </UFormGroup>
 
-    <UFormGroup class="py-3" label="Upload Files">
+    <div>
+      <UButton
+        class="h-10"
+        color="white"
+        :disabled="loadingState.upload"
+        :loading="loadingState.upload"
+        @click="selectFile"
+      >
+        + Upload new file
+      </UButton>
       <input
         type="file"
-        multiple
-        @change="(e) => (selectedFiles.value = Array.from(e.target.files))"
-        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        accept="document/*"
+        class="hidden"
+        id="input-file-upload"
+        @change="upload"
       />
-    </UFormGroup>
+    </div>
 
     <div class="flex justify-end space-x-2">
       <UButton color="gray" @click="$emit('cancel')">Cancel</UButton>

@@ -11,7 +11,7 @@ const {
   getAllDocumentUploads,
   getSingleDocumentUploads,
   deleteDocumentUploads,
-  document_uploadsFormState,
+  documentUploadsFormState,
   isEditingDocumentUploads,
 } = useDocumentUploads();
 
@@ -37,7 +37,7 @@ const openEditDrawer = async (id) => {
   // Fetch the document_uploads data and update the form state
   const { data } = await getSingleDocumentUploads(id);
   if (data) {
-    document_uploadsFormState.value = { ...data };
+    documentUploadsFormState.value = { ...data };
   }
 };
 

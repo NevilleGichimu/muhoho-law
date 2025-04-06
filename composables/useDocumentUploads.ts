@@ -3,6 +3,8 @@ import { useToast } from "#imports";
 export function useDocumentUploads() {
   const toast = useToast();
 
+  const userId = useHashedCookie<undefined | null | number>("b35db0c4e3bb4");
+
   const isEditingDocumentUpload = useState<boolean>(
     "is-editing-document_uploads",
     () => false
@@ -10,13 +12,19 @@ export function useDocumentUploads() {
 
   const document_uploads = ref([]);
 
-  const document_uploadsFormState = useState("document_uploads-formstate", () => ({
+  const documentUploadsFormState = useState("document_uploads-formstate", () => ({
     title: "",
     category: "",
     public_url: "",
     case_id: "",
-    author_id: "",
+    uploaded_by: "",
   }));
+
+  // "title": "Contract Agreement",
+  // "public_url": "https://baiklnypvrekcxkmdfsu.supabase.co/storage/v1/object/public/documents//1743625355829-About%20the%20Project.pdf",
+  // "category": "Contract",
+  // "case_id": 1,
+  // "uploaded_by":
 
   const getAllDocumentUploads = async () => {
     try {
@@ -173,7 +181,7 @@ export function useDocumentUploads() {
   return {
     document_uploads,
     isEditingDocumentUpload,
-    document_uploadsFormState,
+    documentUploadsFormState,
     getAllDocumentUploads,
     getSingleDocumentUpload,
     createDocumentUpload,
